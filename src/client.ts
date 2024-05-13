@@ -4,8 +4,10 @@ import { ApolloOptions } from '../types/index'
 
 export class ApolloClient {
   private $http: AxiosInstance
+  private $opts: ApolloOptions
   constructor(opts: ApolloOptions) {
-    const { configServer, token } = opts
+    this.$opts = opts
+    const { configServer } = opts
     this.$http = axios.create({
       baseURL: `${configServer}/api`,
       headers: {
@@ -16,7 +18,7 @@ export class ApolloClient {
 
   async serviceConfig() {
     try {
-      const res = await this.$http.get(``)
+      const res = await this.$http.get(`services/config`)
       return res.data
     } catch (error) {
       console.error('ApolloClient.serviceConfig ERROR >', error?.message)
@@ -26,7 +28,8 @@ export class ApolloClient {
 
   async getConfig(namespace: string) {
     try {
-      const res = await this.$http.get(``)
+      const { appId } = this.$opts
+      const res = await this.$http.get(`configfiles/json/${appId}/default/${namespace}`)
       return res.data
     } catch (error) {
       console.error('ApolloClient.getConfig ERROR >', error?.message)

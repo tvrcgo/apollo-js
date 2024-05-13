@@ -1,5 +1,6 @@
 
 export interface ApolloOptions {
   configServer: string
-  token: string
+  appId: string
+  token?: string
 }
